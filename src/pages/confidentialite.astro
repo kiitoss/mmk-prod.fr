@@ -1,15 +1,15 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import { site, formattedAddress } from '../config/site';
+import { site } from '../config/site';
 ---
 
 <PageLayout title="Politique de confidentialité" eyebrow="Informations" description={`Comment ${site.legalName} collecte et protège vos données personnelles.`}>
   <div class="prose">
-    <p>Dernière mise à jour : [date].</p>
+    <p>Dernière mise à jour : 14 novembre 2026.</p>
 
     <h2>Responsable du traitement</h2>
     <p>
-      {site.legalName}, {formattedAddress}. Contact : <a href={`mailto:${site.email}`}>{site.email}</a>.
+      {site.name} ({site.legal.director}). Contact : <a href={`mailto:${site.email}`}>{site.email}</a>.
     </p>
 
     <h2>Données collectées</h2>
@@ -27,19 +27,23 @@ import { site, formattedAddress } from '../config/site';
     <h2>Destinataires</h2>
     <p>
       Les données sont destinées exclusivement à {site.legalName}. Elles transitent par notre prestataire d'envoi de
-      formulaire [Web3Forms / Formspree — à préciser], qui agit en qualité de sous-traitant. Elles ne sont ni vendues ni
+      formulaire Formspree, Inc. (États-Unis), qui agit en qualité de sous-traitant. Ce transfert hors de l'Union européenne
+      est encadré par le Data Privacy Framework UE–États-Unis et les clauses contractuelles types de la Commission
+      européenne. Elles ne sont ni vendues ni
       cédées à des tiers.
     </p>
 
     <h2>Durée de conservation</h2>
-    <p>[Durée à préciser, par exemple : 3 ans à compter du dernier contact pour les prospects.]</p>
+    <p>
+      Les demandes sont conservées 3 ans à compter du dernier contact, durée recommandée par la CNIL pour les données de
+      prospects, puis supprimées. Notre prestataire Formspree n'en conserve une copie que 30 jours.
+    </p>
 
     <h2>Cookies et contenus tiers</h2>
     <p>
-      Ce site ne dépose aucun cookie et n'utilise aucun outil de mesure d'audience. Les vidéos ne sont chargées que
-      lorsque vous cliquez sur le bouton de lecture : le lecteur YouTube (en mode « confidentialité renforcée »,
-      youtube-nocookie.com) ou Bunny Stream est alors affiché, et ces services peuvent collecter des données selon leurs
-      propres politiques de confidentialité.
+      Ce site ne dépose aucun cookie et n'utilise aucun outil de mesure d'audience. Les vidéos sont hébergées directement
+      sur ce site, sans lecteur tiers. Les liens vers des plateformes externes (YouTube, par exemple) ne sont suivis que si
+      vous cliquez dessus : ces services appliquent alors leurs propres politiques de confidentialité.
     </p>
 
     <h2>Vos droits</h2>

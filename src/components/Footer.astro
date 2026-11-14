@@ -1,5 +1,5 @@
 ---
-import { site, nav, formattedAddress } from '../config/site';
+import { site, nav } from '../config/site';
 
 const year = new Date().getFullYear();
 ---
@@ -8,18 +8,13 @@ const year = new Date().getFullYear();
   <div class="container footer__grid">
     <div>
       <p class="footer__name">{site.name}</p>
-      <p>
-        {site.legal.form} au capital de {site.legal.capital}<br />
-        {site.legal.rcs} · SIRET {site.legal.siret}<br />
-        {formattedAddress}
-      </p>
+      <p>Vidéaste événementiel basé à {site.base.city}.<br />{site.area}.</p>
     </div>
 
     <nav aria-labelledby="footer-nav">
       <h2 id="footer-nav" class="footer__title">Navigation</h2>
       <ul>
         {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-        <li><a href="/realisations">Toutes les réalisations</a></li>
         <li><a href="/#contact">Contact</a></li>
       </ul>
     </nav>
@@ -29,7 +24,6 @@ const year = new Date().getFullYear();
       <ul>
         <li><a href="/mentions-legales">Mentions légales</a></li>
         <li><a href="/confidentialite">Politique de confidentialité</a></li>
-        <li><a href={site.social.instagram} rel="me noopener">Instagram</a></li>
       </ul>
     </nav>
   </div>

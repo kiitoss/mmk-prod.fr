@@ -227,7 +227,6 @@ a {
 
 /* Texte riche (pages légales, détail projet) */
 .prose {
-  max-width: 72ch;
   color: var(--c-text-2);
 }
 .prose h2 {

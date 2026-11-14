@@ -1,39 +1,21 @@
 ---
-import { PUBLIC_FORM_ENDPOINT, PUBLIC_FORM_ACCESS_KEY } from 'astro:env/client';
+import { PUBLIC_FORM_ENDPOINT } from 'astro:env/client';
 import { site } from '../config/site';
 
-// Sans endpoint configuré, le formulaire ouvre le client e-mail (repli)
+// Formspree. Sans endpoint configuré, le formulaire ouvre le client e-mail (repli)
 const endpoint = PUBLIC_FORM_ENDPOINT || `mailto:${site.email}`;
 const isMailto = endpoint.startsWith('mailto:');
-const isWeb3Forms = endpoint.includes('web3forms.com');
-const thanksUrl = new URL('/merci', Astro.site).href;
 ---
 
-<form class="form" action={endpoint} method="post" enctype={isMailto ? 'text/plain' : undefined}>
-  {
-    isWeb3Forms && (
-      <>
-        <input type="hidden" name="access_key" value={PUBLIC_FORM_ACCESS_KEY} />
-        <input type="hidden" name="subject" value="Nouvelle demande de devis — mmk-prod.fr" />
-        <input type="hidden" name="from_name" value={site.name} />
-        <input type="hidden" name="redirect" value={thanksUrl} />
-      </>
-    )
-  }
-  {!isWeb3Forms && !isMailto && <input type="hidden" name="_subject" value="Nouvelle demande de devis — mmk-prod.fr" />}
+<form class="form" action={endpoint} method="post" enctype={isMailto ? 'text/plain' : undefined} data-ajax={!isMailto}>
+  {!isMailto && <input type="hidden" name="_subject" value="Nouvelle demande de devis (mmk-prod.fr)" />}
 
   <!-- Piège anti-spam : champ invisible que seuls les robots remplissent -->
   <div class="hp" aria-hidden="true">
-    {
-      isWeb3Forms ? (
-        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
-      ) : (
-        <label>
-          Ne pas remplir
-          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
-        </label>
-      )
-    }
+    <label>
+      Ne pas remplir
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+    </label>
   </div>
 
   <div class="form__row">
@@ -76,8 +58,37 @@ const thanksUrl = new URL('/merci', Astro.site).href;
     <a href="/confidentialite">En savoir plus</a>.
   </p>
 
+  <p class="form__error" role="alert" hidden>
+    L'envoi n'a pas abouti. Réessayez dans un instant ou écrivez-nous à <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+
   <button type="submit" class="btn btn--dark">Envoyer la demande</button>
 </form>
+
+<script>
+  // Envoi en arrière-plan puis redirection vers /merci (la redirection native est payante chez Formspree).
+  // Sans JavaScript, le formulaire s'envoie normalement et Formspree affiche sa propre confirmation.
+  const form = document.querySelector<HTMLFormElement>('form[data-ajax="true"]');
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const error = form.querySelector<HTMLElement>('.form__error');
+    if (button) button.disabled = true;
+    if (error) error.hidden = true;
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      window.location.assign('/merci');
+    } catch {
+      if (error) error.hidden = false;
+      if (button) button.disabled = false;
+    }
+  });
+</script>
 
 <style>
   .form {
@@ -119,6 +130,11 @@ const thanksUrl = new URL('/merci', Astro.site).href;
   textarea:user-invalid {
     border-color: #b3261e;
     border-width: 2px;
+  }
+  .form__error {
+    margin: 0;
+    color: #b3261e;
+    font-weight: 600;
   }
   .field__hint,
   .form__legal {

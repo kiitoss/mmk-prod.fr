@@ -1,7 +1,6 @@
 ---
 import { Font } from 'astro:assets';
 import '../styles/global.css';
-import TopBar from '../components/TopBar.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../config/site';
@@ -17,13 +16,14 @@ interface Props {
 
 const { title, description = site.description, image = '/og-image.jpg', noindex = false, type = 'website' } = Astro.props;
 
-const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — Captation vidéo et photo d'événements à Lyon`;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | Vidéaste événementiel à Lyon, Saint-Étienne et en Ardèche`;
 const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/(.)\/$/, '$1'), Astro.site);
 const ogImage = new URL(image, Astro.site);
 
 const organization = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': 'ProfessionalService',
+  '@id': new URL('/#organisation', Astro.site).href,
   name: site.name,
   legalName: site.legalName,
   url: Astro.site?.href,
@@ -31,17 +31,15 @@ const organization = {
   image: ogImage.href,
   description: site.description,
   email: site.email,
-  telephone: site.phoneHref,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: site.address.street,
-    postalCode: site.address.postalCode,
-    addressLocality: site.address.city,
-    addressRegion: site.address.region,
-    addressCountry: site.address.country,
+    addressLocality: site.base.city,
+    postalCode: site.base.postalCode,
+    addressRegion: site.base.region,
+    addressCountry: site.base.country,
   },
-  areaServed: site.area,
-  sameAs: Object.values(site.social),
+  areaServed: site.areaServed,
+  knowsAbout: ['Aftermovie', 'Captation vidéo', "Vidéo d'événement", 'Vidéo pour les réseaux sociaux'],
 };
 ---
 
@@ -78,7 +76,6 @@ const organization = {
   </head>
   <body>
     <a class="skip-link" href="#contenu">Aller au contenu</a>
-    <TopBar />
     <Header />
     <main id="contenu" tabindex="-1">
       <slot />

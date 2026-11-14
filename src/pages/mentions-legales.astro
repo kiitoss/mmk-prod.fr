@@ -1,42 +1,35 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import { site, formattedAddress } from '../config/site';
+import { site } from '../config/site';
 
 const domain = Astro.site?.host ?? 'mmk-prod.fr';
 ---
 
-<PageLayout title="Mentions légales" eyebrow="Informations" description={`Mentions légales du site ${domain}, édité par ${site.legalName}.`}>
+<PageLayout title="Mentions légales" eyebrow="Informations" description={`Mentions légales du site ${domain}.`}>
   <div class="prose">
     <h2>Éditeur du site</h2>
     <p>
-      Le site {domain} est édité par <strong>{site.legalName}</strong>, société par actions simplifiée au capital de
-      {site.legal.capital}.<br />
-      Siège social : {formattedAddress}<br />
-      Immatriculation : {site.legal.rcs} — SIRET : {site.legal.siret}<br />
-      N° de TVA intracommunautaire : {site.legal.vat}<br />
-      E-mail : <a href={`mailto:${site.email}`}>{site.email}</a> — Téléphone : <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+      Le site {domain} présente l'activité de <strong>{site.name}</strong>, projet de société de production audiovisuelle
+      en cours de création.<br />
+      E-mail : <a href={`mailto:${site.email}`}>{site.email}</a>
     </p>
 
-    <h2>Directeur de la publication</h2>
-    <p>{site.legal.director}, en qualité de directeur général.</p>
+    <h2>Responsable de la publication</h2>
+    <p>{site.legal.director}</p>
 
     <h2>Hébergement</h2>
     <p>
-      {site.legal.host.name}<br />
+      Le site est hébergé par {site.legal.host.name}<br />
       {site.legal.host.address}<br />
-      {site.legal.host.website}
+      <a href={site.legal.host.website}>{site.legal.host.website.replace('https://', '')}</a>
     </p>
 
     <h2>Propriété intellectuelle</h2>
     <p>
-      L'ensemble des contenus de ce site (textes, photographies, vidéos, logo, charte graphique) est la propriété de
-      {site.legalName} ou de ses clients et partenaires, et est protégé par le Code de la propriété intellectuelle. Toute
+      L'ensemble des contenus de ce site (textes, vidéos, images, logo, charte graphique) est la propriété de
+      {site.name} ou de ses clients et partenaires, et est protégé par le Code de la propriété intellectuelle. Toute
       reproduction, représentation ou diffusion, totale ou partielle, sans autorisation écrite préalable est interdite.
     </p>
-    <p>[Préciser, le cas échéant, les droits accordés par les clients pour la diffusion des réalisations présentées.]</p>
-
-    <h2>Crédits</h2>
-    <p>[Conception et réalisation du site, crédits photo et vidéo à compléter.]</p>
 
     <h2>Données personnelles</h2>
     <p>
@@ -46,8 +39,8 @@ const domain = Astro.site?.host ?? 'mmk-prod.fr';
 
     <h2>Responsabilité</h2>
     <p>
-      {site.legalName} s'efforce d'assurer l'exactitude des informations publiées sur ce site, sans pouvoir en garantir
-      l'exhaustivité. Les liens vers des sites tiers n'engagent pas la responsabilité de {site.legalName} quant à leur
+      {site.name} s'efforce d'assurer l'exactitude des informations publiées sur ce site, sans pouvoir en garantir
+      l'exhaustivité. Les liens vers des sites tiers n'engagent pas la responsabilité de {site.name} quant à leur
       contenu.
     </p>
   </div>

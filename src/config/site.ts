@@ -1,65 +1,51 @@
 /**
  * Informations de la société, centralisées ici et réutilisées dans tout le site
  * (bandeau, pied de page, contact, mentions légales, données structurées…).
- * Les valeurs entre [crochets] sont à compléter.
  */
 export const site = {
   name: 'MMK Production',
-  legalName: 'SAS MMK Production',
-  meaning: 'Movie Mais Kings',
-  tagline: 'Société de production audiovisuelle',
+  legalName: 'MMK Production',
   description:
-    'SAS MMK Production, société de production audiovisuelle basée à Lyon : aftermovies, captation vidéo et reportages photo pour vos événements.',
+    'MMK Production, basée à Chavanay : aftermovies, captations et formats courts pour vos événements à Lyon, Saint-Étienne, en Ardèche et alentours.',
   locale: 'fr_FR',
 
   email: 'contact@mmk-prod.fr',
-  phone: '[06 00 00 00 00]',
-  /** Numéro au format international, utilisé dans les liens tel: */
-  phoneHref: '+33600000000',
-
-  address: {
-    street: '[numéro et rue]',
-    postalCode: '[69000]',
-    city: 'Lyon',
-    region: 'Auvergne-Rhône-Alpes',
-    country: 'FR',
-  },
-  area: 'Lyon et région Auvergne-Rhône-Alpes',
+  /** Ville où l'équipe est basée (pas d'adresse précise publiée) */
+  base: { city: 'Chavanay', postalCode: '42410', region: 'Auvergne-Rhône-Alpes', country: 'FR' },
+  /** Zone d'intervention, affichée sur le site */
+  area: 'Lyon, Saint-Étienne, Ardèche et alentours',
+  /** Zone d'intervention détaillée, pour les données structurées */
+  areaServed: [
+    { '@type': 'City', name: 'Lyon' },
+    { '@type': 'City', name: 'Saint-Étienne' },
+    { '@type': 'City', name: 'Vienne' },
+    { '@type': 'AdministrativeArea', name: 'Ardèche' },
+    { '@type': 'AdministrativeArea', name: 'Loire' },
+    { '@type': 'AdministrativeArea', name: 'Isère' },
+    { '@type': 'AdministrativeArea', name: 'Rhône' },
+    { '@type': 'AdministrativeArea', name: 'Drôme' },
+  ],
 
   legal: {
-    form: 'SAS',
-    capital: '1 000 €',
-    rcs: 'RCS Lyon [numéro]',
-    siret: '[numéro SIRET]',
-    vat: '[numéro de TVA intracommunautaire]',
+    /** Responsable de la publication (pas encore de société immatriculée) */
     director: 'Antoine Chataignier',
     host: {
-      name: '[Hébergeur, ex. Cloudflare, Inc.]',
-      address: '[adresse de l’hébergeur]',
-      website: '[https://…]',
+      name: 'GitHub, Inc. (GitHub Pages)',
+      address: '88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis',
+      website: 'https://github.com',
     },
   },
 
-  social: {
-    instagram: 'https://www.instagram.com/[compte]',
-  },
-
-  /** Showreel du haut de page */
+  /** Haut de page : boucle muette en fond (courte et légère) + film complet ouvert au clic (fichiers dans public/videos/) */
   showreel: {
-    provider: 'youtube' as const,
-    id: '[ID_VIDEO]',
-    title: 'Showreel MMK Production',
+    loop: '/videos/hero-boucle.mp4',
+    video: '/videos/rencontres-cinema-beaurepaire-2025.mp4',
+    title: 'Aftermovie des 37es Rencontres du cinéma de Beaurepaire',
   },
-
-  /** Identifiant de la bibliothèque Bunny Stream (si vous utilisez Bunny) */
-  bunnyLibraryId: '[ID_BIBLIOTHEQUE]',
 };
 
 export const nav = [
   { label: 'La société', href: '/#societe' },
   { label: 'Prestations', href: '/#prestations' },
   { label: 'Réalisations', href: '/#realisations' },
-  { label: 'Équipe', href: '/#equipe' },
 ];
-
-export const formattedAddress = `${site.address.street}, ${site.address.postalCode} ${site.address.city}`;

@@ -9,7 +9,6 @@ import { site, nav } from '../config/site';
       <Logo />
       <span class="brand__text">
         <span class="brand__name">{site.name}</span>
-        <span class="brand__tagline">{site.tagline}</span>
       </span>
     </a>
 
@@ -73,10 +72,6 @@ import { site, nav } from '../config/site';
     font-family: var(--ff-serif);
     font-size: 1.375rem;
     font-weight: 700;
-  }
-  .brand__tagline {
-    color: var(--c-text-3);
-    font-size: var(--fs-sm);
   }
 
   .nav ul {
@@ -161,9 +156,6 @@ import { site, nav } from '../config/site';
   }
 
   @media (max-width: 420px) {
-    .brand__tagline {
-      display: none;
-    }
     .brand :global(.logo) {
       width: 60px;
     }

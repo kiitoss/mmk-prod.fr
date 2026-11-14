@@ -1,0 +1,103 @@
+---
+import { render } from 'astro:content';
+import { typeLabels, formatDate, getPoster, videoJsonLd, type Projet } from '../lib/projets';
+
+interface Props {
+  projet: Projet;
+}
+
+const { projet } = Astro.props;
+const { titre, type, client, lieu, date, video, vertical, lien } = projet.data;
+const posterImage = await getPoster(projet);
+const jsonLd = await videoJsonLd(projet, Astro.site);
+const details = [client, lieu, formatDate(date)].filter(Boolean).join(' · ');
+const { Content } = await render(projet);
+---
+
+<article class:list={['work', { 'work--vertical': vertical }]}>
+  <div class="work__media" style={vertical ? `--poster: url(${posterImage.src})` : undefined}>
+    <video controls playsinline preload="none" poster={posterImage.src} aria-label={`Vidéo : ${titre}`}>
+      <source src={video} type="video/mp4" />
+      <a href={video}>Télécharger la vidéo</a>
+    </video>
+  </div>
+  <p class="work__meta">{typeLabels[type]} · {date.getUTCFullYear()}</p>
+  <h3>{titre}</h3>
+  <p class="work__details">{details}</p>
+  <div class="work__body"><Content /></div>
+  {
+    lien ? (
+      <a class="link-arrow work__link" href={lien.url} target="_blank" rel="noopener">
+        {lien.label} ↗<span class="visually-hidden"> (nouvel onglet)</span>
+      </a>
+    ) : (
+      <span />
+    )
+  }
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</article>
+
+<style>
+  /* Sous-grille : image, type, titre, détails, description et lien alignés d'une carte à l'autre */
+  .work {
+    display: grid;
+    grid-row: span 6;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+    align-content: start;
+  }
+  /* Même cadre 16:9 pour toutes les vidéos */
+  .work__media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--c-black);
+    border-radius: var(--radius);
+  }
+  video {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: transparent;
+  }
+  /* Vidéo verticale : centrée dans le cadre, sur un fond flouté tiré de son image d'aperçu */
+  .work--vertical .work__media::before {
+    content: '';
+    position: absolute;
+    inset: -10%;
+    background: var(--poster) center / cover;
+    filter: blur(28px) brightness(0.55);
+  }
+  .work--vertical video {
+    object-fit: contain;
+  }
+  .work__meta {
+    margin: 1.1rem 0 0.35rem;
+    color: var(--c-text-3);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  h3 {
+    margin-bottom: 0.35rem;
+  }
+  .work__details {
+    margin-bottom: 0.75rem;
+    color: var(--c-text-2);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+  .work__body {
+    color: var(--c-text-2);
+  }
+  .work__body :global(p) {
+    margin: 0 0 0.75rem;
+  }
+  .work__link {
+    align-self: start;
+    justify-self: start;
+  }
+</style>
