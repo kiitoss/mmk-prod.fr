@@ -1,0 +1,171 @@
+---
+import Logo from './Logo.astro';
+import { site, nav } from '../config/site';
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="brand" href="/">
+      <Logo />
+      <span class="brand__text">
+        <span class="brand__name">{site.name}</span>
+        <span class="brand__tagline">{site.tagline}</span>
+      </span>
+    </a>
+
+    <nav class="nav nav--desktop" aria-label="Navigation principale">
+      <ul>
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        <li><a class="btn btn--primary" href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <details class="burger">
+      <summary>
+        <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+          <path class="burger__open" d="M3 6h18M3 12h18M3 18h18"></path>
+          <path class="burger__close" d="M5 5l14 14M19 5L5 19"></path>
+        </svg>
+        Menu
+      </summary>
+      <nav class="nav nav--mobile" aria-label="Navigation principale (mobile)">
+        <ul>
+          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+          <li><a class="btn btn--primary" href="/#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: relative;
+    background: var(--c-white);
+    border-bottom: 1px solid var(--c-border);
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 5.5rem;
+    padding-block: 0.75rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    text-decoration: none;
+  }
+  .brand :global(.logo) {
+    width: 76px;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+  .brand__name {
+    font-family: var(--ff-serif);
+    font-size: 1.375rem;
+    font-weight: 700;
+  }
+  .brand__tagline {
+    color: var(--c-text-3);
+    font-size: var(--fs-sm);
+  }
+
+  .nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem 1.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .nav a:not(.btn) {
+    display: inline-block;
+    padding-block: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+  }
+  .nav a:not(.btn):hover {
+    border-bottom-color: var(--c-yellow);
+  }
+
+  .burger {
+    display: none;
+  }
+
+  @media (max-width: 960px) {
+    .nav--desktop {
+      display: none;
+    }
+    .burger {
+      display: block;
+    }
+    .burger summary {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 48px;
+      padding: 0.5rem 0.9rem;
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      font-weight: 700;
+      cursor: pointer;
+      list-style: none;
+    }
+    .burger summary::-webkit-details-marker {
+      display: none;
+    }
+    .burger__close,
+    .burger[open] .burger__open {
+      display: none;
+    }
+    .burger[open] .burger__close {
+      display: inline;
+    }
+    .nav--mobile {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      background: var(--c-white);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .nav--mobile ul {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 0.5rem var(--gutter) 1.25rem;
+    }
+    .nav--mobile li + li {
+      border-top: 1px solid var(--c-border);
+    }
+    .nav--mobile a:not(.btn) {
+      display: block;
+      padding-block: 0.9rem;
+      border-bottom: 0;
+    }
+    .nav--mobile .btn {
+      width: 100%;
+      margin-top: 1rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .brand__tagline {
+      display: none;
+    }
+    .brand :global(.logo) {
+      width: 60px;
+    }
+  }
+</style>

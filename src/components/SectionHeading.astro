@@ -1,0 +1,36 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  id?: string;
+  level?: 'h1' | 'h2';
+}
+
+const { eyebrow, title, id, level: Tag = 'h2' } = Astro.props;
+---
+
+<div class="heading">
+  <p class="heading__eyebrow">{eyebrow}</p>
+  <Tag id={id} class="heading__title">{title}</Tag>
+  <span class="heading__rule" aria-hidden="true"></span>
+</div>
+
+<style>
+  .heading__eyebrow {
+    margin-bottom: 0.5rem;
+    color: var(--c-text-3);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .heading__title {
+    margin-bottom: 1.25rem;
+  }
+  .heading__rule {
+    display: block;
+    width: 56px;
+    height: 4px;
+    background: var(--c-yellow);
+  }
+</style>

@@ -1,0 +1,147 @@
+---
+import { PUBLIC_FORM_ENDPOINT, PUBLIC_FORM_ACCESS_KEY } from 'astro:env/client';
+import { site } from '../config/site';
+
+// Sans endpoint configuré, le formulaire ouvre le client e-mail (repli)
+const endpoint = PUBLIC_FORM_ENDPOINT || `mailto:${site.email}`;
+const isMailto = endpoint.startsWith('mailto:');
+const isWeb3Forms = endpoint.includes('web3forms.com');
+const thanksUrl = new URL('/merci', Astro.site).href;
+---
+
+<form class="form" action={endpoint} method="post" enctype={isMailto ? 'text/plain' : undefined}>
+  {
+    isWeb3Forms && (
+      <>
+        <input type="hidden" name="access_key" value={PUBLIC_FORM_ACCESS_KEY} />
+        <input type="hidden" name="subject" value="Nouvelle demande de devis — mmk-prod.fr" />
+        <input type="hidden" name="from_name" value={site.name} />
+        <input type="hidden" name="redirect" value={thanksUrl} />
+      </>
+    )
+  }
+  {!isWeb3Forms && !isMailto && <input type="hidden" name="_subject" value="Nouvelle demande de devis — mmk-prod.fr" />}
+
+  <!-- Piège anti-spam : champ invisible que seuls les robots remplissent -->
+  <div class="hp" aria-hidden="true">
+    {
+      isWeb3Forms ? (
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
+      ) : (
+        <label>
+          Ne pas remplir
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+        </label>
+      )
+    }
+  </div>
+
+  <div class="form__row">
+    <div class="field">
+      <label for="f-name">Nom et prénom <span aria-hidden="true">*</span></label>
+      <input id="f-name" name="nom" type="text" autocomplete="name" required maxlength="120" />
+    </div>
+    <div class="field">
+      <label for="f-org">Société ou organisme</label>
+      <input id="f-org" name="organisme" type="text" autocomplete="organization" maxlength="120" />
+    </div>
+  </div>
+
+  <div class="form__row">
+    <div class="field">
+      <label for="f-email">E-mail <span aria-hidden="true">*</span></label>
+      <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="160" />
+    </div>
+    <div class="field">
+      <label for="f-date">Date de l'événement</label>
+      <input id="f-date" name="date_evenement" type="date" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="f-message">Votre projet <span aria-hidden="true">*</span></label>
+    <textarea
+      id="f-message"
+      name="message"
+      rows="6"
+      required
+      minlength="20"
+      maxlength="5000"
+      aria-describedby="f-message-hint"></textarea>
+    <p id="f-message-hint" class="field__hint">Type d'événement, lieu, nombre d'invités, prestations souhaitées…</p>
+  </div>
+
+  <p class="form__legal">
+    Les champs marqués d'un astérisque (*) sont obligatoires. Vos données servent uniquement à répondre à votre demande.
+    <a href="/confidentialite">En savoir plus</a>.
+  </p>
+
+  <button type="submit" class="btn btn--dark">Envoyer la demande</button>
+</form>
+
+<style>
+  .form {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+  label {
+    font-weight: 600;
+  }
+  input,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.7rem 0.85rem;
+    background: var(--c-white);
+    color: var(--c-black);
+    border: 1px solid #8a8a84;
+    border-radius: var(--radius);
+    font: inherit;
+  }
+  textarea {
+    resize: vertical;
+  }
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid var(--c-black);
+    outline-offset: 1px;
+  }
+  input:user-invalid,
+  textarea:user-invalid {
+    border-color: #b3261e;
+    border-width: 2px;
+  }
+  .field__hint,
+  .form__legal {
+    margin: 0;
+    color: var(--c-text-3);
+    font-size: var(--fs-sm);
+  }
+  .btn {
+    justify-self: start;
+  }
+  .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  @media (max-width: 640px) {
+    .form__row {
+      grid-template-columns: 1fr;
+    }
+    .btn {
+      justify-self: stretch;
+    }
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+import { site } from '../config/site';
+---
+
+<div class="topbar on-dark">
+  <div class="container topbar__inner">
+    <p>Captation vidéo et photo d'événements — {site.area}</p>
+    <a href={`mailto:${site.email}`}>{site.email}</a>
+  </div>
+</div>
+
+<style>
+  .topbar {
+    background: var(--c-black);
+    color: var(--c-on-dark-2);
+    font-size: var(--fs-sm);
+  }
+  .topbar__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 1.5rem;
+    min-height: 2.5rem;
+    padding-block: 0.4rem;
+  }
+  p {
+    margin: 0;
+  }
+  a {
+    color: var(--c-white);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 640px) {
+    .topbar__inner {
+      justify-content: center;
+      text-align: center;
+    }
+    a {
+      display: none;
+    }
+  }
+</style>

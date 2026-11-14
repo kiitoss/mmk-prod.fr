@@ -1,0 +1,15 @@
+---
+import { Picture } from 'astro:assets';
+import logo from '../assets/logo-mmk.webp';
+---
+
+<Picture
+  src={logo}
+  alt=""
+  width={76}
+  densities={[1, 2]}
+  formats={['avif', 'webp']}
+  fallbackFormat="webp"
+  loading="eager"
+  class="logo"
+/>
